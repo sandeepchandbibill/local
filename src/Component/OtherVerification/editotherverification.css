@@ -1,0 +1,32 @@
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-top: auto;
+}
+.contacttext {
+    width: 20px;
+}
+.search {
+    width: 100px;
+    margin-top: 5px;
+    height: 35px;
+    font-size: 20px;
+}
+.query {
+    width: 300px;
+    padding-left: 5px;
+    margin-left: 5px;
+    height: 35px;
+    font-size: 20px;
+}
+.button1 {
+    margin-left: 5px;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+}
+.filter1 {
+    margin-left: 5px;
+    height: 35px;
+    font-size: 20px;
+}

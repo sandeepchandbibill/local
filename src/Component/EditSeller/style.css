@@ -1,0 +1,12 @@
+.errorMsg {
+    color: #cc0000;
+    margin-bottom: 12px;
+  }
+  .icon{
+    font-size:36px;
+    color:red;
+    padding-left: 10px;
+  }
+  .required {
+    color: red;
+  }
