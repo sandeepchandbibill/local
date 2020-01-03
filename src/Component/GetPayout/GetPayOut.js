@@ -22,13 +22,15 @@ class Tables extends Component {
   }
 
   getPayoutData = ()=>{
-    // axios.get('http://localhost:3000/rows')
-    axios.get('http://192.168.1.62:4000/api/seller/payouts?offset='+this.state.offset+'&limit=10')
+    let headers = {
+      'x-auth-token': sessionStorage.getItem('token')
+     }
+    axios.get('http://192.168.1.62:4000/api/seller/payouts?offset='+this.state.offset+'&limit=10',{headers})
     .then((res)=> {
       this.setState({payout:res.data.data.rows})
       
      
-      console.log(this.state.count)
+      console.log(this.state.payout)
       
   })
 }
@@ -40,10 +42,11 @@ class Tables extends Component {
     })
   }
   getSearchData = () =>{
-    console.log(this.state.searchBy)
-    console.log("Hiii...."+this.state.value)
+    let headers = {
+      'x-auth-token': sessionStorage.getItem('token')
+     }
     this.setState({payout:[]})
-    axios.get(`http://192.168.1.62:4000/api/seller/payouts?seller_id=`+this.state.value)
+    axios.get(`http://192.168.1.62:4000/api/seller/payouts?seller_id=`+this.state.value,{headers})
     .then((res)=> {
       this.setState({payout:res.data.data.rows})
       console.log("Hello.."+res.data.data.rows)
@@ -89,9 +92,9 @@ class Tables extends Component {
                     <th>Edit</th>
                   </tr>
                   </thead>
-
+                  {payout !== null && Object.keys(payout).length > 0 ?   <tbody>
                   {payout.map((items)=>
-                  <tbody>
+                 
                   <tr key={items.id} className="myList">
                   <td>{items.seller_id}</td>
                     <td>{items.active.toString()}</td>
@@ -109,9 +112,9 @@ class Tables extends Component {
                     
                     <td><FontAwesomeIcon className="mt-3" onClick={()=>this.editSeller(items)}  icon= {faEdit} color="blue" /></td>
                   </tr>
-                  </tbody>
+               
                   )
-                }
+                }   </tbody> : <h2>Not Found</h2>}
                 </Table>
                 <nav>
                 <Pagination>

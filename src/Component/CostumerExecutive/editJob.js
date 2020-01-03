@@ -60,11 +60,12 @@ import React,{Component} from 'react';
     if(this.validate()){
       
       // fetch('http://localhost:3000/seller/'+ this.props.location.state.detail.id,{
-      fetch('http://192.168.1.62:4000//api/seller/info/'+ this.props.location.state.detail.id,{
+      fetch('http://192.168.1.62:4000/api/seller/info/'+ this.props.location.state.detail.id,{
       method: 'put',
       
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-auth-token': sessionStorage.getItem('token')
       },
       body: JSON.stringify({
         seller_name: this.state.seller_name,
@@ -259,7 +260,7 @@ import React,{Component} from 'react';
 
                       <Row>
                         
-                          <Button color="primary" className="px-2" onClick={this.submitFormEdit}>Submit</Button>
+                          <Button color="primary" className="px-2" onClick={this.submitFormEdit}>Submit&EditPayout</Button>
                           {/* <Button color="danger" className="px-2 ml-3" onClick={this.submitFormEditAndPayout}>Submit & Go TO Payout</Button> */}
                         
                       </Row>

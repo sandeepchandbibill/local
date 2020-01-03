@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import './tables.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { Card, CardBody,Button, Label, CardHeader, Col, Pagination, PaginationItem, PaginationLink, InputGroupAddon,InputGroupText,Form,Input, InputGroup, Row, Table, FormGroup } from 'reactstrap';
@@ -63,16 +64,19 @@ class Task extends Component {
       })
   }
   
-    // getSearchData = () =>{
-    //   console.log(this.state.searchBy)
-    //   console.log(this.state.query)
-    //   this.setState({seller: []})
-    //   axios.get(`http://192.168.1.62:4000/api/seller/info?${this.state.searchBy}=${this.state.query}`)
-    //   .then((res)=> {
-    //     this.setState({seller:res.data.data})
-    //     // console.log(res.data.data)
-    //   })
-    // }
+  getSearchData = () =>{
+    let headers = {
+      'x-auth-token': sessionStorage.getItem('token')
+     }
+    console.log(this.state.searchBy)
+    console.log(this.state.query)
+    this.setState({seller: []})
+    axios.get(`http://192.168.1.62:4000/api/assign/jobs/seller?${this.state.searchBy}=${this.state.query}`,{ headers })
+    .then((res)=> {
+      this.setState({seller:res.data.data})
+      // console.log(res.data.data)
+    })
+  }
   
     getFilterUser = () =>{
         
@@ -121,6 +125,20 @@ class Task extends Component {
               <Card>
                 <CardHeader>
                   <i className="fa fa-align-justify"></i> Seller Details
+                  <form >
+                    <select className = "search" name ="searchBy" defaultValue = {this.state.searchBy} onChange={this.handleInputChange}> 
+                      <option value="id">ID</option>
+                      <option value="name">Name</option>
+                      <option value="contact_no">Contact</option>
+                      {/* <option value="contact_no_2">Alternate Contact</option> */}
+                    </select>
+                      
+                      <input className="query" id = "query" type = 'text' defaultValue={this.state.query} onChange={this.handleInputChange} name="query" placeholder="What are you looking for?" />
+                          
+                      {/* <input id = "query" type = 'text' defaultValue={this.state.query} onChange={this.handleInputChange} name="query" placeholder="What are you looking for?"> */}
+                      {/* </input> */}
+                    <button type ="button" className="button1" onClick={()=>this.getSearchData({})}>Search</button>
+                </form>
                
                   
                   

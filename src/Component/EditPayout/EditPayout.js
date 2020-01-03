@@ -2,14 +2,14 @@ import React,{Component} from 'react';
  import { withRouter} from 'react-router-dom';
  import './style.css';
  import SSCI from '../Can/Can'
- import Select from 'react-select'
- import ModalForm from '../ModularForm/Modularform'
+//  import Select from 'react-select'
+//  import ModalForm from '../ModularForm/Modularform'
  import { Button, Card, CardBody, CardGroup,FormGroup, Col, Container, Form, Input, InputGroup, Row, Label } from 'reactstrap';
- const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+//  const options = [
+//   { value: 'chocolate', label: 'Chocolate' },
+//   { value: 'strawberry', label: 'Strawberry' },
+//   { value: 'vanilla', label: 'Vanilla' },
+// ];
  class EditPayout extends Component {
   state={
     active: this.props.location.state.detail.active,
@@ -50,7 +50,7 @@ import React,{Component} from 'react';
     
       //regular expression for email validation
       var pattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-      if (pattern.test(this.state.email)== false) {
+      if (pattern.test(this.state.email)===false) {
         formIsValid = false;
         errors["emailid"] = "*Please enter valid email-ID.";
       }
@@ -109,7 +109,10 @@ import React,{Component} from 'react';
       fetch('http://192.168.1.62:4000/api/seller/payouts/'+this.props.location.state.detail.seller_id,{
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+        
+            'x-auth-token': sessionStorage.getItem('token')
+          
         },
         body: JSON.stringify({
          active: this.state.active,
@@ -141,13 +144,8 @@ import React,{Component} from 'react';
         .catch(err => console.log(err))
     }
   }
-  //  componentDidMount(){
-  //    console.log(this.props.location.state.detail)
-  //  }
-  componentDidMount(){
-    const state= this.props.location.state.detail
-  }
 
+ 
   render() {
     return (
         <div className="app flex-row ">

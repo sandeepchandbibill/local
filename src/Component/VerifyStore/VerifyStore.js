@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { Card, CardBody,Button, CardHeader, Col, Pagination, Form, Label, InputGroup, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import ModalForm from '../StUtcC/Stucc'
-// import Select from "react-multiselect-checkboxes";
+import './table.css'
 import Select from 'react-select'
-const options = [
-  { value: "Aadhar", label: "Aadhar is not provided" },
-  { value: "Pan", label: "Pan is not Provided" },
-  { value: "Account Number", label: "Account Number is not Provided" }
-];
+import Multiselect from 'react-bootstrap-multiselect'
+// const options = [
+//   { value: "Aadhar", label: "Aadhar is not provided" },
+//   { value: "Pan", label: "Pan is not Provided" },
+//   { value: "Account Number", label: "Account Number is not Provided" }
+// ];
 class Tables extends Component {
   state= {
     payout:[],
@@ -17,18 +18,25 @@ class Tables extends Component {
      count: 0,
      val: 0,
      value:'',
-     searchBy:'seller_id',
+     query:'',
+     searchBy:'id',
      users:[],
      id:'',
-     selectedOption: []
+     selectedOption: null,
+     option: [],
+     reason:'',
+     clearable: true
      
     
   }
   componentDidMount(){
     this.getPayoutData();
-    this.getFilterUser()
+    this.getFilterUser();
+    this.getRejectReasons()
+    
     
   }
+ 
   handleInputChange = event => {
     this.setState({[event.target.name]: event.target.value})
   }
@@ -47,19 +55,27 @@ class Tables extends Component {
       this.setState({payout:res.data.data.rows, count:res.data.data.count})
   })
 }
+getRejectReasons(){
+  let headers = {
+    'x-auth-token': sessionStorage.getItem('token')
+   }
+  axios.get("http://192.168.1.62:4000/api/seller/reject",{headers}).then((res)=> {
+    this.setState({option:res.data.data})
+     console.log('gg'+ JSON.stringify(this.state.option))
+  })
+ 
+}
 
-  editSeller = (items) =>{
-    //console.log("Huiii......."+JSON.stringify(this.state.seller))
-      this.props.history.push({pathname: '/editpayouts/',
-      state:{detail: items }
-    })
-  }
+
   getSearchData = () =>{
     this.setState({payout: []})
-    axios.get(`http://192.168.1.62:4000/api/seller/verify?seller_id=`+this.state.value)
+    let headers = {
+      'x-auth-token': sessionStorage.getItem('token')
+     }
+    axios.get(`http://192.168.1.62:4000/api/seller/info?${this.state.searchBy}=${this.state.query}`,{ headers })
     .then((res)=> {
-      this.setState({payout:res.data.data.rows[0]})
-      console.log("Hello.."+res.data.data.rows)
+      this.setState({payout:res.data.data})
+      console.log("Hello.."+res.data.data)
     })
 
   }
@@ -98,25 +114,38 @@ class Tables extends Component {
 })
     })
 }
-submitRejectForm(sellerid){
+submitRejectForm(id){
+  let result = this.state.selectedOption.map(({ value }) => value)
+  console.log("hi", result)
+  console.log("helli"+id)
   axios({
-    // method: 'post',
-    // url:'http://192.168.1.62:4000/api/assign/jobs/users',
-    // headers: {
-    //   'x-auth-token': sessionStorage.getItem('token'),
-    //   'Content-Type': 'application/json'
-    // },
+    method: 'post',
+    url:'http://192.168.1.62:4000/api/seller/'+id+'/reject',
+   
+    headers: {
+      'x-auth-token': sessionStorage.getItem('token'),
+      'Content-Type': 'application/json'
+    },
     data: JSON.stringify({
-      seller_ids: sellerid,
-      selectedOption: this.state.selectedOption
+                    
+    reject_array: result
 
     })
   }).then((res)=>console.log(res.data))
+ 
+  // var output =  this.state.selectedOption.map(function(obj) {
+  //   return Object.keys(obj).sort().map(function(key) { 
+  //     return obj[key];
+  //   });
+  // });
+  // var merged = [].concat.apply([], output);
+  // console.log("hi", merged)
+  
 }
 Accept=(item)=>{
   axios({
     method: 'post',
-    url:'http://192.168.1.62:4000/api/seller/'+this.item + '/action'
+    url:'http://192.168.1.62:4000/api/seller/'+item + '/action'
     ,
     headers: {
       'x-auth-token': sessionStorage.getItem('token'),
@@ -127,10 +156,16 @@ Accept=(item)=>{
 
     })
     
+  }).then(res=> {
+    alert("updated")
+    this.props.history.push({pathname: '/base/tables/'})
   })
   console.log(item)
 }
   render() {
+    let options = this.state.option.map(function (city) {
+      return { value: city.id, label: city.title };
+    })
     const {payout} =this.state;
     return (
       <div className="animated fadeIn">
@@ -139,14 +174,20 @@ Accept=(item)=>{
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Seller Details
-                {/* <form className = "my-0 ml-sm-2">
-                    <select  name ="searchBy" defaultValue = {this.state.searchBy} onChange={this.handleInputChange}> 
-                      <option value="seller_id">ID</option>
+                <form >
+                    <select className = "search" name ="searchBy" defaultValue = {this.state.searchBy} onChange={this.handleInputChange}> 
+                      <option value="id">ID</option>
+                      <option value="name">Name</option>
+                      <option value="contact_no">Contact</option>
+                      
                     </select>
-                      <input className="col-md-3 my-0 ml-sm-2 " id = "value" type = 'text' defaultValue={this.state.value} onChange={this.handleInputChange} name="value" placeholder="What are you looking for?">
-                      </input>
-                    <button  type ="button"  className=" mb-1 btn btn-success btn-outline-read btn-sm my-0 ml-sm-2" onClick={()=>this.getSearchData({})}>Search</button>
-                </form> */}
+                      
+                      <input className="query" id = "query" type = 'text' defaultValue={this.state.query} onChange={this.handleInputChange} name="query" placeholder="What are you looking for?" />
+                          
+                      {/* <input id = "query" type = 'text' defaultValue={this.state.query} onChange={this.handleInputChange} name="query" placeholder="What are you looking for?"> */}
+                      {/* </input> */}
+                    <button type ="button" className="button1" onClick={()=>this.getSearchData({})}>Search</button>
+                </form>
               </CardHeader>
               <CardBody>
                 <Table className="able" hover bordered striped responsive size="sm">
@@ -173,10 +214,10 @@ Accept=(item)=>{
                    
                   </tr>
                   </thead>
-
+                  {payout !== null && payout.length > 0 ?   <tbody>
                   {payout.map((items)=>
 
-                  <tbody>
+                  
                   <tr key={items.id} className="myList">
                   <td>{items.id}</td>
                   <td>{items.seller_name}</td>
@@ -227,37 +268,48 @@ Accept=(item)=>{
                
                 </Form>
                 <br></br>
-                {/* <Form>  
+                <Form>  
                     <Label>Reject</Label>
+                    
                    
-                    <Select 
-                        value={this.selectedOption}
+                      <Select
+                        
                         onChange={this.handleChange}
                         options={options}
+                        
                         isMulti
+                        
                       />
+                      {/* <select   name="reason" onChange={this.handleChange} >
+                        <option>Select Reason</option>
+                        {this.state.option.map((item)=>(
+                        <option value={item}>
+                         {item}
+                         </option>
+                         ))}
+                        
+                      </select> */}
+                     
+                   
                      
                        
                       <Button color="primary" size="xs" style={{float: "left",  marginTop: "10px"}}   onClick={()=>this.submitRejectForm(items.id)}>Submit</Button>
 
-                      </Form>  */}
+                      </Form> 
                       </td>
                     
                      
 
                 
                   </tr>
-                  </tbody>
+                  
                   )
-                }
+                }</tbody>: <h2>Not Found</h2>}
                 </Table>
                 <nav>
                 <Pagination>
                     <PaginationItem><PaginationLink previous tag="button" onClick={()=> this.state.offset >= 10 ? this.getPayoutData(this.state.offset = (this.state.offset) - 10) :""}>Prev</PaginationLink></PaginationItem>
-                    {/* <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=0)}>1</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=20)}>2</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=40)}>3</PaginationLink></PaginationItem>
-                    <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=60)}>4</PaginationLink></PaginationItem> */}
+    
                     <PaginationItem><PaginationLink next tag="button" onClick={()=> this.state.offset <= this.state.count ? this.getPayoutData(this.state.offset = (this.state.offset) + 10) : ""}>Next</PaginationLink></PaginationItem>
                   </Pagination>
                 </nav>

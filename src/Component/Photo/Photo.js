@@ -1,10 +1,10 @@
-import React, { useState, Component } from 'react';
+import React, {  Component } from 'react';
 import {
   Carousel,
   CarouselItem,
   CarouselControl,
   CarouselIndicators,
-  Button,
+ 
   CardText,
   Card,
   CardBody,
@@ -53,11 +53,7 @@ class Photo extends Component{
     
     return (
 
-      // <CarouselItem
-      //   onExiting={() => setAnimating(true)}
-      //   onExited={() => setAnimating(false)}
-      //   key={item.src}
-      // >
+     
       <CarouselItem
       
       key={item}
@@ -74,8 +70,7 @@ class Photo extends Component{
     <Card>
             <Carousel
         activeIndex={this.state.activeIndex}
-        next={this.next}
-        previous={this.previous}
+       
         >
         <CarouselIndicators items={this.state.items} activeIndex={this.activeIndex} onClickHandler={this.goToIndex} />
         {slides}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import Image from '../CancelCheque/StoreImage'
-import Axios from 'axios'
+
 class ModalForm extends Component{
     constructor(props) {
         super(props)

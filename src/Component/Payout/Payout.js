@@ -28,9 +28,11 @@ class EditSeller extends Component {
     return this.props.history.push({pathname: '/base/tables'})
   }
   getPayoutData(){
-    
+    let headers = {
+      'x-auth-token': sessionStorage.getItem('token')
+     }
     // console.log("Hiii......"+this.props.location.state.seller_id)
-        axios.get('http://192.168.1.62:4000/api/seller/payouts?seller_id='+this.props.location.state.seller_id)
+        axios.get('http://192.168.1.62:4000/api/seller/payouts?seller_id='+this.props.location.state.seller_id, {headers})
     .then((res)=> {
       //  console.log(JSON.stringify(res.data.data.rows[0]));
         this.setState({seller:res.data.data.rows[0]})
@@ -109,7 +111,10 @@ class EditSeller extends Component {
       fetch('http://192.168.1.62:4000/api/seller/payouts/' + this.props.location.state.seller_id, {
             method: 'put',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              
+                'x-auth-token': sessionStorage.getItem('token')
+               
             },
             body: JSON.stringify({
                   seller_id: this.props.location.state.seller_id,

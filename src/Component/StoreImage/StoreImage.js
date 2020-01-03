@@ -1,10 +1,10 @@
-import React, { useState, Component } from 'react';
+import React, {  Component } from 'react';
 import {
   Carousel,
   CarouselItem,
   CarouselControl,
   CarouselIndicators,
-  Button,
+  
   CardText,
   Card,
   CardBody,

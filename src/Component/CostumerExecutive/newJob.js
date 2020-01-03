@@ -85,12 +85,12 @@ class NewJob extends Component {
                     <td>{items.email}</td>
                     <td>{items.valid_till}</td>
                     <td>{items.seller_type_id}</td>
-                    <td >{items.aadhar > 0 ? "True" : "Flase"}</td>
-                    <td >{items.pan_no > 0 ? "True" : "Flase"}</td>
-                    <td >{items.reg_no > 0 ? "True" : "Flase"}</td>
-                    <td >{items.gstin > 0 ? "True" : "Flase"}</td>
-                    {/* <td>{items.inventory_docs.length > 0 ? "True" : "Flase"}</td>
-                    <td>{items.cancelled_cheque.length > 0 ? "True" : "Flase"}</td> */}
+                    <td >{items.aadhar > 0 ? "True" : "False"}</td>
+                    <td >{items.pan_no > 0 ? "True" : "False"}</td>
+                    <td >{items.reg_no > 0 ? "True" : "False"}</td>
+                    <td >{items.gstin > 0 ? "True" : "False"}</td>
+                    {/* <td>{items.inventory_docs.length > 0 ? "True" : "False"}</td>
+                    <td>{items.cancelled_cheque.length > 0 ? "True" : "False"}</td> */}
                     {/* <td><Button onClick={()=>this.editSeller(items)} color="secondary">EDIT</Button></td> */}
                     <td><FontAwesomeIcon className="mt-3" onClick={()=>this.editSeller(items)}  icon= {faEdit} color="blue" /></td>
                   </tr>

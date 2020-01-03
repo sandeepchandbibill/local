@@ -22,14 +22,12 @@ import SSCI from '../StUtcC/Stucc'
     reg_no:this.props.location.state.detail.reg_no,
     gstin:this.props.location.state.detail.gstin,
     errors: {},
-      
     // markers: "https://www.google.com/maps/search/@${this.props.location.state.detail.lat},${this.props.location.state.detail.log}"
     markers: "https://www.google.com/maps/search/?api=1&query="+this.props.location.state.detail.lat+","+this.props.location.state.detail.log,
       //  markers: 'https://www.google.com/maps/@${this.props.location.state.detail.lat},${this.props.location.state.detail.log},${10}z'
     aadhar_doc: ["https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+2 +"/images/"+0,
     "https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+2 +"/images/"+1],
     pan_doc: ["https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+1 +"/images/"+0,
-    "https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+1 +"/images/"+1
     ],
     reg_doc: ["https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+4 +"/images/"+0],
     gst_doc: ["https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+3 +"/images/"+0]
@@ -46,7 +44,7 @@ import SSCI from '../StUtcC/Stucc'
      let formIsValid = true
     
       //regular expression for email validation
-      var pattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
       if (!pattern.test(this.state.email)) {
         formIsValid = false;
         
@@ -69,7 +67,10 @@ import SSCI from '../StUtcC/Stucc'
       method: 'put',
       
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        
+          'x-auth-token': sessionStorage.getItem('token')
+         
       },
       body: JSON.stringify({
         seller_name: this.state.seller_name,
@@ -109,7 +110,10 @@ import SSCI from '../StUtcC/Stucc'
       method: 'put',
       
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+    
+          'x-auth-token': sessionStorage.getItem('token')
+         
       },
       body: JSON.stringify({
         seller_name: this.state.seller_name,
@@ -136,7 +140,7 @@ import SSCI from '../StUtcC/Stucc'
   
 
    componentDidMount(){
-    console.log("hi"+JSON.parse("mydata"))
+     console.log(this.state.aadhar_doc)
    }
  
   location=()=>{
@@ -158,13 +162,12 @@ import SSCI from '../StUtcC/Stucc'
                     <Form>
                       <h1 className="align-items-center float-center">Edit Seller Details</h1>
                       <SSCI className="text-muted" buttonLabel="image" docs={[
-                        "https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+0 +"/images/"+0,
-                       
+                        "https://seller-stage.binbill.com/stores/"+this.props.location.state.detail.id+"/upload/"+1 +"/images/"+1,
+                        "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                       ]}></SSCI>
                       
                       <br></br>
-                      {/* <InputGroup> */}
-                      {/* <Modalforms  buttonLabel="Map" markers={markers}  lat={this.props.location.state.detail.lat} log={this.props.location.state.detail.log}></Modalforms></InputGroup> */}
+                      
                       
                       <Label>Seller Id </Label>
                       <InputGroup className="mb-3">
@@ -173,10 +176,7 @@ import SSCI from '../StUtcC/Stucc'
                         
                         
                       </InputGroup>
-                      {/* <Label>Store location:</Label>
-                      <InputGroup>
                      
-                      </InputGroup> */}
                         
                       <label>Seller Name:</label>
                       <InputGroup className="mb-4">
@@ -188,8 +188,7 @@ import SSCI from '../StUtcC/Stucc'
                       <InputGroup className="mb-3">
                         <Input type="text" name="address"   defaultValue={this.props.location.state.detail.address}
                         onChange ={this.onChange} />
-                        {/* <a href={} className="btn"><i className="fa fa-map-marker" onClick={this.location}>
-                          </i> </a> */}
+                       
                           <i onClick={this.open} className="fa fa-map-marker icon" onClick={this.location}>
                           </i>
                       </InputGroup>
@@ -247,8 +246,7 @@ import SSCI from '../StUtcC/Stucc'
                         onSome ={this.onChange.bind(this)}>
                           aadhar No:{this.state.aadhar}
                          </ModalForm>
-                         {/* <Input type="text" name="aadhar"  defaultValue={this.state.aadhar}
-                          onChange ={this.onChange} /> */}
+                       
                          
                         
 
@@ -256,8 +254,7 @@ import SSCI from '../StUtcC/Stucc'
 
                       <label>Pan Number: {this.state.pan_no}</label>
                       <InputGroup className="mb-4">
-                        {/* <Input type="text" name="pan_no"  defaultValue={this.props.location.state.detail.pan_no}
-                        onChange ={this.onChange} /> */}
+                        
                           <ModalForm  aadhar = {this.props.location.state.detail.pan_no} name="pan_no" 
                         defaultValue={this.props.location.state.detail.pan_no} 
                         id={this.props.location.state.detail.pan_no} buttonLabel="pan_no"  
@@ -272,8 +269,7 @@ import SSCI from '../StUtcC/Stucc'
 
                       <label>Reg Number: {this.state.reg_no}</label>
                       <InputGroup className="mb-4">
-                        {/* <Input type="text" name="reg_no"  defaultValue={this.props.location.state.detail.reg_no}
-                        onChange ={this.onChange} /> */}
+                        
                           <ModalForm  
                            name="reg_no" 
                         defaultValue={this.props.location.state.detail.reg_no} 
@@ -288,8 +284,7 @@ import SSCI from '../StUtcC/Stucc'
 
                       <label>GSTIN: {this.state.gstin}</label>
                       <InputGroup className="mb-4">
-                        {/* <Input type="text" name="gstin"  defaultValue={this.props.location.state.detail.gstin}
-                        onChange ={this.onChange} /> */}
+                      
                           <ModalForm  
                            name="gstin" 
                         defaultValue={this.props.location.state.detail.gstin} 

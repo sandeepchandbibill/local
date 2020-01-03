@@ -59,7 +59,10 @@ import React,{Component} from 'react';
     fetch('http://192.168.1.62:4000/api/seller/other/'+this.state.id,{
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          
+            'x-auth-token': sessionStorage.getItem('token')
+           
         },body
       })
         .then(res=> {

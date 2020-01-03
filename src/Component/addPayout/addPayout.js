@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, FormGroup, Label, InputGroup,Input, FormText, Row } from 'reactstrap';
 import axios from 'axios'
-import SSCI from '../StUtcC/Stucc'
+// import SSCI from '../StUtcC/Stucc'
+import SSCI from '../Can/Can'
 import './style.css'
 class AddPayout extends Component{
       state= {
@@ -89,12 +90,13 @@ class AddPayout extends Component{
     submitFormEdit = e => {
       e.preventDefault()
       if(this.validate()){
-        
+       
         // fetch('http://localhost:3000/rows/'+this.props.location.state.detail.seller_id,{
         fetch('http://192.168.1.62:4000/api/seller/payouts/'+this.props.location.state.sellerid,{
           method: 'put',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-auth-token': sessionStorage.getItem('token')
           },
           body: JSON.stringify({
             seller_id: this.props.location.state.sellerid,
@@ -205,6 +207,7 @@ render(){
                               <Input type="text"  name="phone"     id="phone" onChange={this.onChange}  />
                         </FormGroup>
                         <div className="errorMsg">{this.state.errors.phone}</div>
+                        
                         <FormGroup>
                               <Label for="bank_account">Bank Account Number<span aria-hidden="true" className="required"> *</span></Label>
                               <Input type="text"  name="bank_account"     id="bank_account" onChange={this.onChange}  />

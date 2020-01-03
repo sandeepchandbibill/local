@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Card, CardBody,Button, CardHeader, Col, Pagination, PaginationItem, PaginationLink, InputGroupAddon,InputGroupText,Form,Input, InputGroup, Row, Table } from 'reactstrap';
 import './Tables.css'
 
-
+import {api} from '../../../config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
@@ -36,6 +36,7 @@ class Tables extends Component {
     axios.get('http://192.168.1.62:4000/api/seller/info?offset='+this.state.offset+'&limit=20',{ headers })
     // axios.get('http://localhost:3000/seller')
     .then((res)=>  {
+    
       this.setState({seller:res.data.data.rows, count:res.data.data.count})
       // console.log(res.data.data.rows)
       // this.setState({seller: res.data})
@@ -71,7 +72,7 @@ class Tables extends Component {
 
   editSeller = (items) =>{
     //console.log("Huiii......."+JSON.stringify(this.state.seller))
-      sessionStorage.setItem('mydata',JSON.stringify(items))
+      
       this.props.history.push({pathname: '/editseller',
       state:{detail: items }
     })
@@ -138,9 +139,9 @@ class Tables extends Component {
                     <th>Edit</th>
                   </tr>
                   </thead>
-                  { this.state.seller ?  <h2>Not Found</h2> :  <div>
+                  {seller !== null && seller.length > 0 ?   <tbody>
                     {seller.map((items)=>
-                  <tbody>
+                  
                   <tr key={items.id} className="myList">
                     <td>{items.id}</td>
                     <td>{items.seller_name}</td>
@@ -159,10 +160,10 @@ class Tables extends Component {
                     {/* <td><Button onClick={()=>this.editSeller(items)} color="secondary">EDIT</Button></td> */}
                     <td><FontAwesomeIcon className="mt-3" onClick={()=>this.editSeller(items)}  icon= {faEdit} color="blue" /></td>
                   </tr>
-                  </tbody>
+                
                   )
                 }
-                     </div>}
+                      </tbody> : <h2>Not Found</h2> }
                 </Table>
                 
                 <nav>
