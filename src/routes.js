@@ -33,6 +33,8 @@ const InventoryTask = React.lazy(()=>import('./Component/InventoryMangement/inve
 const SKUDetails = React.lazy(()=> import('./Component/inventorys/viewinventory'))
 const EditSku = React.lazy(()=>import('./Component/inventorys/editSku'))
 const EdirMEasurement= React.lazy(()=>import('./Component/inventorys/editmeasurement'))
+const Category = React.lazy(()=>import('./Component/inventorys/category'))
+const EditCat = React.lazy(()=>import('./Component/inventorys/editcategory'))
 let token = sessionStorage.getItem('token')
 
 const routes = [
@@ -68,6 +70,8 @@ const routes = [
 {path:'/editsku', name: 'editSku', component: EditSku},
 {path:'/editmeasurement', name: 'edit Measurement', component: EdirMEasurement},
 {path:'/viewMeasurement', name: 'Measurement', component: Measurement},
+{path: '/category', name: 'Category', component: Category},
+{path: '/editCat', name: 'Edit Category', component: EditCat},
 
   {path: '/', component: login},
 

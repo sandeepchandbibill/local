@@ -37,7 +37,7 @@ import Axios from 'axios';
       // fetch('https://binbill-admin-panel.binbill.com/api/seller/info/'+this.state.id,{
       Axios({
       method: 'post',
-      url: 'http://192.168.1.62:4000/api/inventory/sku/'+this.state.id,
+      url: 'http://192.168.1.62:4000/api/inventory/sku/measurement/'+this.state.id,
       data: JSON.stringify({
        
         sku_id: this.state.sku_id,
@@ -66,7 +66,7 @@ import Axios from 'axios';
         if(res.status === 200){
         
           
-           return this.props.history.push({pathname: '/viewSKu'})
+           return this.props.history.push({pathname: '/viewMeasurement'})
         }
     })
       .catch(err => console.log(err))
@@ -99,11 +99,7 @@ import Axios from 'axios';
    
    }
  
-  location=()=>{
-  const markers = "https://www.google.com/maps/search/?api=1&query="+this.state.latitude+","+this.state.longitude
-    window.open(markers)
-  }
-
+ 
   render() {
     const d = JSON.parse(this.state.sku)
     return (
@@ -147,38 +143,39 @@ import Axios from 'axios';
                         
                         
                       </InputGroup>
-                      <Label>Sub Category ID</Label>
+                      <Label>Measurement Value</Label>
                       <InputGroup className="mb-3">
-                        <Input type="text" name="sub_category_id"   defaultValue={d.sub_category_id}
+                        <Input type="text" name="measurement_value"   defaultValue={d.measurement_value}
                         onChange ={this.onChange} />
                         
                         
                       </InputGroup>
-                      <Label>Title</Label>
+                      <Label>Pack Numbers</Label>
                       <InputGroup className="mb-3">
-                        <Input type="text" name="title"   defaultValue={d.title}
-                        onChange ={this.onChange} />
-                        
-                        
-                      </InputGroup>
-                      <Label>HSN Code</Label>
-                      <InputGroup className="mb-3">
-                        <Input type="text" name="hsn_code"   defaultValue={d.hsn_code}
-                        onChange ={this.onChange} />
-                        
-                        
-                      </InputGroup>
-                      <Label>Image Name</Label>
-                      <InputGroup className="mb-3">
-                        <Input type="text" name="image_name"   defaultValue={d.image_name}
+                        <Input type="text" name="pack_numbers"   defaultValue={d.pack_numbers}
                         onChange ={this.onChange} />
                         
                         
                       </InputGroup>
                       
-                      <Label>Image Code</Label>
+                      <Label>Cashback Percent</Label>
                       <InputGroup className="mb-3">
-                        <Input type="text" name="image_code"   defaultValue={d.image_code}
+                        <Input type="text" name="cashback_percent"   defaultValue={d.cashback_percent}
+                        onChange ={this.onChange} />
+                        
+                        
+                      </InputGroup>
+                      
+                      <Label>Discount Percent</Label>
+                      <InputGroup className="mb-3">
+                        <Input type="text" name="discount_percent"   defaultValue={d.discount_percent}
+                        onChange ={this.onChange} />
+                        
+                        
+                      </InputGroup>
+                      <Label>Bar Code</Label>
+                      <InputGroup className="mb-3">
+                        <Input type="text" name="bar_code"   defaultValue={d.bar_code}
                         onChange ={this.onChange} />
                         
                         
@@ -190,16 +187,16 @@ import Axios from 'axios';
                         
                         
                       </InputGroup>
-                      <Label>Priority Index</Label>
+                      <Label>Tax</Label>
                       <InputGroup className="mb-3">
-                        <Input type="text" name="priority_index"  defaultValue={d.priority_index}
+                        <Input type="text" name="tax"  defaultValue={d.tax}
                         onChange ={this.onChange} />
                         
                         
                       </InputGroup>
-                      <label>Has Measurements</label>
+                      <label>Has Images</label>
                       <InputGroup className="mb-3">
-                        <select type="text" name="has_measurements"  defaultValue={d.has_measurements}
+                        <select type="text" name="has_images"  defaultValue={d.has_images}
                         onChange ={this.onChange} >
                                 <option value="true">True</option>
                                 <option value="false"> False </option>
@@ -213,21 +210,7 @@ import Axios from 'axios';
                         
                         
                       </InputGroup>
-                      <Label>Paid Seller Commission</Label>
-                      <InputGroup className="mb-3">
-                        <Input type="text" name="paid_seller_commission"   defaultValue={d.paid_seller_commission}
-                        onChange ={this.onChange} />
-                        
-                        
-                      </InputGroup>
-                      <Label>Unpaid Seller Commission</Label>
-                      <InputGroup className="mb-3">
-                        <Input type="text" name="unpaid_seller_commission"   defaultValue={d.unpaid_seller_commission}
-                        onChange ={this.onChange} />
-                        
-                        
-                      </InputGroup>
-
+                     
 
                       
                       

@@ -9,7 +9,7 @@ class Task extends Component {
     state= {
       seller:[],
       
-       offset : 0,   //current page
+       offset :   0,   //current page
        limit : 15,  //per page
        count: 0,
        query:'',
@@ -18,6 +18,7 @@ class Task extends Component {
        users:[],
        id:'',
       _refs : {},
+      
        comment:[],
        management: this.props.management,
        result : {}
@@ -52,13 +53,15 @@ class Task extends Component {
          
       }
       onChanges = () => {
-        var comment = Object.keys(this.state._refs).map(
-          key => this.state._refs[key] && this.state._refs[key].value
-        )
+        
         this.setState({
-          comment: Object.assign(comment, [comment])
+          comment: Object.keys(this.state._refs).map(
+            key => this.state._refs[key] && this.state._refs[key].value
+          )
         });
-       console.log(comment)
+        
+      
+       
       };
     
     componentDidMount(){
@@ -72,14 +75,13 @@ class Task extends Component {
       let headers = {
         'x-auth-token': sessionStorage.getItem('token')
        }
-    //    console.log(sessionStorage.getItem('token'))
+ 
       
       axios.get('http://192.168.1.62:4000/api/assign/jobs/inventory?offset='+this.state.offset+'&limit=15',{ headers })
-      // axios.get('http://localhost:3000/seller')
+      
       .then((res)=>  {
         this.setState({seller:res.data.data, count:res.data.data.count})
-        // console.log(res.data)
-        // this.setState({seller: res.data})
+     
       })
   }
   
@@ -100,11 +102,20 @@ class Task extends Component {
   submitForm = () => {
        
 
+    var at=  this.state.options.map(String)
+    console.log(at)
+    console.log(Object.keys(this.state._refs))
+    
+    var difference = (Object.keys(this.state._refs).filter(function(e){
+      console.log(this.has(e))
+      return this.has(e);
+    }, new Set(at)).map(key => (
         
+      { ["id"]: key, ["comment"]: this.state._refs[key].value }
+      ) ));
+    
+    console.log(JSON.stringify(difference));
 
-//  var result = Object.assign({}, [this.state.options]);
-//  var comment = Object.assign({}, [this.state.comment]);
-var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.options[i]})))
           console.log(result);
 
         // console.log(comment);
@@ -204,7 +215,7 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
                   <th>JOB Date</th>
                   <th>Job TIme</th>
                   
-                 
+                 <th>Select Task</th>
                   <th>View</th>
                   <th>Delete</th>
                   
@@ -217,54 +228,25 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
                 <tbody>
                  <React.Fragment  key={items.id}>
                  <tr className="myList">
-                  <td>{index}</td>
+                <td>{index}</td>
                 <td>{items.id}</td>
-                  <td>{items.created_at.slice(0,10)}</td>
-                  <td>{items.created_at.slice(11,19)}</td>
-                  <td>{items.comments}</td>
-                  
-                  <td >
-                    
-                    
-                   
-                     <div className=" text-center">
-                        
-                        <input  type="checkbox"  value= {items.id} onChange={this.onChange.bind(this)}></input>
-                        <input type="text" ref={ref => (this.state._refs[items.id] = ref)} onChange={this.onChanges.bind(this)} defaultValue={null} placeholder="comments" ></input>
+                <td>{items.created_at.slice(0,10)}</td>
+                <td>{items.created_at.slice(11,19)}</td>
+                <td >
+                    <div className=" text-center">
+                    <input  type="checkbox"  value= {items.id} onChange={this.onChange.bind(this)}></input>
+                        <br></br>
+                    <input type="text" ref={ref => (this.state._refs[items.id] = ref)} onChange={this.onChanges.bind(this)} defaultValue={null} placeholder="comments" ></input>
                             
-                     
                     </div>
 
-                    
-                    
-                    
-                    
-                    </td>
+                  </td>
                     <td>
-                    {/* <Label>Assign To:</Label>
-                    <InputGroup className="mb-1">
-                    <select type="text" name="id" onChange={this.handleInputChange}
-                       ><option>Select a CE</option>
-                              {this.state.users.map((user)=>(
-                                  <option value={user.id}>{user.full_name}</option>
-                              ))}
-                             
-                    </select>
-                    <br></br>
-                    </InputGroup>
-                    <InputGroup>
-                          <Button  outline color="success" size="xs">Assign to</Button>
-                    </InputGroup> */}
+                 
                    <div className="text-center">
                    <Modal  buttonLabel="view"></Modal>
 
                    </div>
-                    
-                    
-
-                      
-                    
-                   
                     </td>
                     <td>
                     <div className="text-center">
@@ -272,11 +254,7 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
 
                    </div>
                     </td>
-                  
-                  
-                  
-                  
-                </tr>
+              </tr>
                  </React.Fragment>
                 
                 </tbody>
@@ -288,10 +266,7 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
               <nav>
                 <Pagination>
                   <PaginationItem><PaginationLink previous tag="button" onClick={()=> this.state.offset >= 10 ? this.getSellerData(this.state.offset = (this.state.offset) - 10) :""}>Prev</PaginationLink></PaginationItem>
-                  {/* <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=0)}>1</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=20)}>2</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=40)}>3</PaginationLink></PaginationItem>
-                  <PaginationItem><PaginationLink tag="button" onClick={()=> this.getSellerData(this.state.offset=60)}>4</PaginationLink></PaginationItem> */}
+                 
                   <PaginationItem><PaginationLink next tag="button" onClick={()=> this.state.offset <= this.state.count ? this.getSellerData(this.state.offset = (this.state.offset) + 10) : ""}>Next</PaginationLink></PaginationItem>
                 </Pagination>
               </nav>
@@ -311,13 +286,7 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
                     </InputGroup>
                     <Button color="primary"   onClick={this.submitForm}>Submit</Button>
                     </Col>
-                    
-                      
-                        
-                        
-                      
-                    
-              
+                             
               </Form>
               
               </CardBody>
@@ -325,6 +294,13 @@ var result =Object.assign(...this.state.comment.map((k, i) => ({[k]: this.state.
           </Col>
         </Row>
       </div>
+                    
+                      
+                        
+                        
+                      
+                    
+     
         
        
       );

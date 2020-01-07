@@ -76,6 +76,12 @@ const CE = [
         url: '/viewMeasurement',
         icon: 'icon-puzzle',
       },
+      {
+        name: 'Category',
+        url: '/category',
+        icon: 'icon-puzzle',
+
+      }
       
    
     ],
@@ -184,6 +190,12 @@ const Admin  = [
         url: '/viewMeasurement',
         icon: 'icon-puzzle',
       },
+      {
+        name: 'Category',
+        url: '/category',
+        icon: 'icon-puzzle',
+
+      }
       
    
     ],
@@ -321,6 +333,12 @@ const SuperAdmin  = [
         url: '/viewMeasurement',
         icon: 'icon-puzzle',
       },
+      {
+        name: 'Category',
+        url: '/category',
+        icon: 'icon-puzzle',
+
+      }
       
    
     ],
