@@ -61,6 +61,25 @@ const CE = [
       },
     ],
   },
+  {
+    name:'Inventory ',
+    url: '/base',
+    icon: 'icon-cursor',
+    children: [
+      {
+        name: 'View / Update SKU',
+        url: '/viewSKu',
+        icon: 'icon-puzzle',
+      },
+      {
+        name: 'View/Update Measurement',
+        url: '/viewMeasurement',
+        icon: 'icon-puzzle',
+      },
+      
+   
+    ],
+  },
 ]
 
 
@@ -82,6 +101,7 @@ const Admin  = [
         name: 'Task Assign',
         url: '/base/task',
         icon: 'icon-puzzle',
+        
       },
       {
         name: 'In Progress',
@@ -149,6 +169,25 @@ const Admin  = [
        },
     ],
   },
+  {
+    name:'Inventory ',
+    url: '/base',
+    icon: 'icon-cursor',
+    children: [
+      {
+        name: 'View / Update SKU',
+        url: '/viewSKu',
+        icon: 'icon-puzzle',
+      },
+      {
+        name: 'View / Update Measurement',
+        url: '/viewMeasurement',
+        icon: 'icon-puzzle',
+      },
+      
+   
+    ],
+  },
 
 ]
 
@@ -166,9 +205,10 @@ const SuperAdmin  = [
   icon: 'icon-cursor',
   children: [
     {
-      name: 'Register',
+      name: 'Register Users',
       url: '/register',
       icon: 'icon-speedometer',
+    
       badge: {
         variant: 'info',
       },
@@ -264,6 +304,25 @@ const SuperAdmin  = [
         url: '/sms',
         icon: 'icon-puzzle',
        },
+    ],
+  },
+  {
+    name: 'Inventory',
+    url: '/base',
+    icon: 'icon-cursor',
+    children: [
+      {
+        name: 'View / Update SKU',
+        url: '/viewSKu',
+        icon: 'icon-puzzle',
+      },
+      {
+        name: 'View / Update Measurement',
+        url: '/viewMeasurement',
+        icon: 'icon-puzzle',
+      },
+      
+   
     ],
   },
 

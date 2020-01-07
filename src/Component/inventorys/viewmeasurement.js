@@ -3,13 +3,13 @@ import axios from 'axios'
 import { Card, CardBody,Button, CardHeader, Col, Pagination, PaginationItem, PaginationLink, InputGroupAddon,InputGroupText,Form,Input, InputGroup, Row, Table } from 'reactstrap';
 import './Tables.css'
 
-import {api} from '../../../config'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 class Tables extends Component {
   state= {
-    seller:[],
+    Sku:[],
     
      offset : 0,   //current page
      limit : 10,  //per page
@@ -33,12 +33,12 @@ class Tables extends Component {
      }
      console.log(sessionStorage.getItem('token'))
     console.log(headers)
-    axios.get('http://192.168.1.62:4000/api/seller/info?offset='+this.state.offset+'&limit=20',{ headers })
+    axios.get('http://192.168.1.62:4000/api/inventory/sku/measurement?offset='+this.state.offset+'&limit=20', {headers})
     // axios.get('http://localhost:3000/seller')
     .then((res)=>  {
     
-      this.setState({seller:res.data.data.rows, count:res.data.data.count})
-      // console.log(res.data.data.rows)
+      this.setState({Sku:res.data.data.rows, count:res.data.data.count})
+      console.log(res.data.data.rows)
       // this.setState({seller: res.data})
     })
 }
@@ -49,36 +49,27 @@ class Tables extends Component {
      }
     console.log(this.state.searchBy)
     console.log(this.state.query)
-    this.setState({seller: []})
+    this.setState({Sku: []})
     axios.get(`http://192.168.1.62:4000/api/seller/info?${this.state.searchBy}=${this.state.query}`,{ headers })
     .then((res)=> {
-      this.setState({seller:res.data.data})
+      this.setState({Sku:res.data.data})
       // console.log(res.data.data)
     })
   }
 
-  getFilterData = (val) =>{
-    let headers = {
-      'x-auth-token': sessionStorage.getItem('token')
-     }
-    console.log(this.state.verifyUser)
-    this.setState({seller: []})
-    axios.get(`http://192.168.1.62:4000/api/seller/info?verified_whitelist_status=${val}`,{ headers })
-    .then((res)=> {
-      this.setState({seller:res.data.data})
-      // console.log(res.data.data)
-    })
-  }
+
 
   editSeller = (items) =>{
     //console.log("Huiii......."+JSON.stringify(this.state.seller))
       
-      this.props.history.push({pathname: '/editseller',
-      state:{detail: items }
-    })
+    sessionStorage.setItem("measurement",JSON.stringify(items))
+      
+    this.props.history.push({pathname: '/editmeasurement'
+  })
+
   }
   render() {
-    const {seller} =this.state;
+    const {Sku} =this.state;
   
     return (
       <div className="animated fadeIn">
@@ -86,7 +77,7 @@ class Tables extends Component {
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Seller Details
+                <i className="fa fa-align-justify"></i> SKU Details
                 <form >
                     <select className = "search" name ="searchBy" defaultValue = {this.state.searchBy} onChange={this.handleInputChange}> 
                       <option value="id">ID</option>
@@ -102,19 +93,7 @@ class Tables extends Component {
                     <button type ="button" className="button1" onClick={()=>this.getSearchData({})}>Search</button>
                 </form>
                 
-                <form className="float-right">
-                    <select className = "filter1" name ="verifyUser" defaultValue = {this.state.verifyUser} onChange={(e)=>{
-                      this.getFilterData(e.target.value)
-                    }}> 
-                      <option value="1" > Verified and White Listed</option>
-                      <option value="3"> Verified and  Non-White Listed</option>
-                      <option value="4"> Non-Verified and  White Listed</option>
-                      <option value="2"> Non-Verified and Non-White Listed</option>
-                      <option value="5"> On-Hold</option>
-                    </select>
-
-                    {/* <button type ="button" className=" mb-1 btn btn-success btn-outline-read btn-sm my-0 ml-sm-2" onClick={()=>this.getFilterData({})}>Search</button> */}
-                </form>
+              
 
 
               </CardHeader>
@@ -122,39 +101,45 @@ class Tables extends Component {
                 <Table className="able" hover bordered striped responsive size="sm">
                   <thead>
                   <tr className="tablerow">
-                    <th>Seller Id</th>
-                    <th> Name</th>
-                    <th> Address</th>
-                    <th> Contact</th>
-                    <th>Alternate Contact</th>
-                    <th> Email </th>
-                    <th> Validity</th>
-                    <th> Type</th>
-                    <th>Aadhar Card</th>
-                    <th>Pan Card</th>
-                    <th>Registration</th>
-                    <th>GST</th>
-                    {/* <th>Inventory</th>
-                    <th>Cancel Check</th> */}
+                      <th>ID</th>
+                    <th>SKU Id</th>
+                    <th> Seller id</th>
+                    <th> Measurement Type</th>
+                    <th >Measurement Value</th>
+                    
+                    <th>Pack Numbers</th>
+                    <th> Cashback Percent </th>
+                    <th> Discount Percent</th>
+                    <th>Bar Code</th>
+                    <th>MRP</th>
+                    <th>tax</th>
+                    <th>Has Images</th>
+                   
+                    <th>Status Type</th>
+                    
                     <th>Edit</th>
                   </tr>
                   </thead>
-                  {seller !== null && seller.length > 0 ?   <tbody>
-                    {seller.map((items)=>
+                  {Sku !== null && Sku.length > 0 ?   <tbody>
+                    {Sku.map((items)=>
                   
                   <tr key={items.id} className="myList">
                     <td>{items.id}</td>
-                    <td>{items.seller_name}</td>
-                    <td>{items.address}</td>
-                    <td>{items.contact_no}</td>
-                    <td>{items.contact_no_2}</td>
-                    <td>{items.email}</td>
-                    <td>{items.valid_till}</td>
-                    <td>{items.seller_type_id}</td>
-                    <td >{items.aadhar > 0 ? "True" : "False"}</td>
-                    <td >{items.pan_no > 0 ? "True" : "False"}</td>
-                    <td >{items.reg_no > 0 ? "True" : "False"}</td>
-                    <td >{items.gstin > 0 ? "True" : "False"}</td>
+                    <td>{items.sku_id}</td>
+                    <td>{items.seller_id}</td>
+                    <td>{items.measurement_type}</td>
+                    <td>{items.measurement_value}</td>
+                    <td>{items.pack_numbers}</td>
+                    <td>{items.cashback_percent}</td>
+                    <td>{items.discount_percent}</td>
+                    <td>{items.bar_code}</td>
+                    <td>{items.mrp}</td>
+                    <td>{items.tax}</td>
+                    <td>{items.has_images > 0 ? "True" : "False"}</td>
+                    <td>{items.status_type}</td>
+                    
+                    
+                  
                     {/* <td>{items.inventory_docs.length > 0 ? "True" : "False"}</td>
                     <td>{items.cancelled_cheque.length > 0 ? "True" : "False"}</td> */}
                     {/* <td><Button onClick={()=>this.editSeller(items)} color="secondary">EDIT</Button></td> */}

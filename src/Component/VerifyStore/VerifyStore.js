@@ -190,7 +190,7 @@ Accept=(item)=>{
                 </form>
               </CardHeader>
               <CardBody>
-                <Table className="able" hover bordered striped responsive size="sm">
+                <Table  className="able table table-hover" hover bordered striped responsive size="sm">
                 <thead>
                   <tr className="tablerow">
                     <th>Seller Id</th>
@@ -209,7 +209,7 @@ Accept=(item)=>{
                     
                       
                         
-                        <th>Actions</th>
+                        <th>Action<pre>                            </pre></th>
                         
                    
                   </tr>
@@ -237,38 +237,14 @@ Accept=(item)=>{
                   
                     
                     
-                    <td>
+                    <td >
+                    
                       <Label>Accept</Label>
                       <br></br>
                       <Button onClick= {()=>this.Accept(items.id)}  size="xs" color="primary" style={{float: "center",  marginTop: "10px"}} >Accept</Button>
                       <br></br>
                        <Form>
-                     
-                    <Label>Assign To:</Label>
-                      <InputGroup className="mb-1">
-                      <select type="text" name="id" onChange={this.handleInputChange}
-                         >   <option >select C.E</option>
-                                {this.state.users.map((user)=>(
-                                    <option value={user.id}>{user.full_name}</option>
-                                ))}
-                               
-                          </select>
-                        
-                      </InputGroup>
-                      <InputGroup>
-                      <Button color="primary" size="xs" style={{float: "left",  marginTop: "10px"}}    onClick={()=>this.submitForm(items.id)}>Submit</Button></InputGroup>
-                     
-                      
-                      
-                        
-                          
-                          
-                        
-                      
-               
-                </Form>
-                <br></br>
-                <Form>  
+                       <Form>  
                     <Label>Reject</Label>
                     
                    
@@ -296,6 +272,34 @@ Accept=(item)=>{
                       <Button color="primary" size="xs" style={{float: "left",  marginTop: "10px"}}   onClick={()=>this.submitRejectForm(items.id)}>Submit</Button>
 
                       </Form> 
+                      <br></br>
+                       <br></br>
+                       <br></br>
+                    <Label>Assign To:</Label>
+                      <InputGroup className="mb-1">
+                      <select type="text" name="id" onChange={this.handleInputChange}
+                         >   <option >select C.E</option>
+                                {this.state.users.map((user)=>(
+                                    <option value={user.id}>{user.full_name}</option>
+                                ))}
+                               
+                          </select>
+                        
+                      </InputGroup>
+                      <InputGroup>
+                      <Button color="primary" size="xs" style={{float: "left",  marginTop: "10px"}}    onClick={()=>this.submitForm(items.id)}>Submit</Button></InputGroup>
+                     
+                      
+                      
+                        
+                          
+                          
+                        
+                      
+               
+                </Form>
+                <br></br>
+               
                       </td>
                     
                      
